@@ -1,13 +1,23 @@
 import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import fetchPosts from "./Services/post.services";
+import fetchPosts, { addPosts } from "./Services/post.services";
 
 class Posts extends React.PureComponent {
   constructor(props) {
     super(props);
-    this.state = { posts: [] };
+    this.state = { title: "", body: "" };
   }
+
+  addComment = () => {
+    this.props.addPosts(this.state.title, this.state.body);
+  };
+
+  textChangeHandler = ({ target }) => {
+    var obj = {};
+    obj[target.attributes["name"].value] = target.value;
+    this.setState(obj);
+  };
 
   render() {
     return (
@@ -21,6 +31,17 @@ class Posts extends React.PureComponent {
         >
           Get Data
         </button>
+        <div>
+          <div> Title </div>
+          <input name="title" onChange={this.textChangeHandler} />
+          <div> Comment</div>
+          <textarea name="body" onChange={this.textChangeHandler} />
+          <div>
+            <button disabled={this.props.isPostAdded} onClick={this.addComment}>
+              Add
+            </button>
+          </div>
+        </div>
         {this.props.pending && <div>Loading...</div>}
         {this.props.posts &&
           this.props.posts.map(item => {
@@ -35,17 +56,20 @@ class Posts extends React.PureComponent {
     );
   }
 }
+
 const mapStateToProps = state => ({
   error: state.posts.error,
   posts: state.posts.posts,
   pending: state.posts.pending,
-  counts: state.posts.counts
+  counts: state.posts.counts,
+  isPostAdded: state.posts.addPostPending
 });
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      fetchPosts: fetchPosts
+      fetchPosts: fetchPosts,
+      addPosts: addPosts
     },
     dispatch
   );

@@ -2,14 +2,15 @@ import rootReducer from "../Reducer";
 import { applyMiddleware, createStore } from "redux";
 import thunk from "redux-thunk";
 
-let initialStated = {
+let initialState = {
   visibility: [],
   notes: [],
   posts: {
     pending: false,
     posts: [],
     error: null,
-    counts: 0
+    counts: 0,
+    addPostPending: false
   }
 };
 
@@ -17,6 +18,6 @@ const middlewares = [thunk];
 
 export default createStore(
   rootReducer,
-  initialStated,
+  initialState,
   applyMiddleware(...middlewares)
 );
