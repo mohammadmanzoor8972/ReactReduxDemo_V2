@@ -24,7 +24,12 @@ class Posts extends React.PureComponent {
         {this.props.pending && <div>Loading...</div>}
         {this.props.posts &&
           this.props.posts.map(item => {
-            return <p key={item.id}>{item.body}</p>;
+            return (
+              <div key={item.id}>
+                <h4>{item.title}</h4>
+                <p>{item.body}</p>
+              </div>
+            );
           })}
       </div>
     );
