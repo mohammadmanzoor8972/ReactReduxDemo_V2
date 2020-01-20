@@ -10,7 +10,9 @@ class Posts extends React.PureComponent {
   }
 
   addComment = () => {
-    this.props.addPosts(this.state.title, this.state.body);
+    if (this.state.title && this.state.body) {
+      this.props.addPosts(this.state.title, this.state.body);
+    }
   };
 
   textChangeHandler = ({ target }) => {
